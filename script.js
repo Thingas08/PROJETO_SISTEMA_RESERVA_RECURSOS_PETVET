@@ -2,13 +2,50 @@
 SCRIPT DO SPRINT 01
 */
 
+/*
+SCRIPT DO SPRINT 02
+MNATÉM O QUE HAVIA NO SPRINT ! E ADICIONA FLUXO FUNCIONAL
+*/
+// 1) TOAST ACESSÍVEL (feedback não bloqueante)
+// Por quê? Substitui o alert() por UX moderna e acessível
+const $toast = document.getElementById('toast');
+
+let __toastTimer = null;
+
+function mostrarToast(mensagem, tipo ='ok'){
+    //fallback se #toast não existir (ambiente antigo)
+    if(!$toast){
+        alert(mensagem);
+        return;
+    }
+
+    $toast.classList.remove('warn','err','visivel');
+    if(tipo ==='warn')$toast.classList.add('warn');
+    if(tipo ==='err')$toast.classList.add('err');
+    $toast.textContent = mensagem;
+
+    void $toast.offsetWidth;
+    $toast.classList.add('visivel');
+
+    clearTimeout(__toastTimer);
+    __toastTimer = setTimeout(()=>$toast.classList.remove('visivel'),2800);
+
+}
+
+
+/* =========================================
+   1) FUNÇÕES ORIGINAIS -Sprint 1 (mantidas)
+   =========================================
+*/
+
 // abre o modal
 function abrirModal() {
     const modal = document.getElementById("modalLogin");
     if (modal && typeof modal.showModal === "function") {
         modal.showModal();
     } else {
-        alert("Modal não suportado neste navegador");
+        // ALTERAÇÃO SPRINT 2: usar toast no lugar de alert, quando possível
+        mostrarToast("Modal não suportado neste navegador","warn");
     }
 }
 
